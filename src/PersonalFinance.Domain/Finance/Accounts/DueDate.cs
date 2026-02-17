@@ -9,7 +9,11 @@ public sealed class DueDate : ValueObject
 {
     public int Day { get; }
 
+    private DueDate() { }
+
     private DueDate(int day) => Day = day;
+
+    internal static DueDate From(int day) => new(day);
 
     public static Result<DueDate> Create(int day)
     {

@@ -7,9 +7,13 @@ namespace PersonalFinance.Domain.Finance.Common;
 
 public sealed class Money : ValueObject
 {
-	public decimal Amount { get; }
+    public decimal Amount { get; }
+
+    private Money() { }
 
     private Money(decimal amount) => Amount = amount;
+
+    internal static Money From(decimal amount) => new(amount);
 
     public static Result<Money> Create(decimal amount)
     {
