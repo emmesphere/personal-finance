@@ -1,0 +1,13 @@
+@PersonalFinance.WebApi_HostAddress = http://localhost:5173
+
+#if (EnableOpenAPI)
+GET {{PersonalFinance.WebApi_HostAddress}}/openapi/v1.json
+Accept: application/json
+
+###
+#endif
+
+GET {{PersonalFinance.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

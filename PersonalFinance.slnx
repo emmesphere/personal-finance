@@ -1,0 +1,17 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".editorconfig" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/PersonalFinance.Application/PersonalFinance.Application.csproj" />
+    <Project Path="src/PersonalFinance.BuildingBlocks/PersonalFinance.BuildingBlocks.csproj" />
+    <Project Path="src/PersonalFinance.Domain/PersonalFinance.Domain.csproj" />
+    <Project Path="src/PersonalFinance.Infrastructure/PersonalFinance.Infrastructure.csproj" />
+    <Project Path="src/PersonalFinance.WebApi/PersonalFinance.WebApi.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PersonalFinance.ArchitectureTests/PersonalFinance.ArchitectureTests.csproj" />
+    <Project Path="tests/PersonalFinance.BuildingBlocks.Tests/PersonalFinance.BuildingBlocks.Tests.csproj" Id="c0ae88cc-0c1b-4a09-81bb-dd2710ec670b" />
+    <Project Path="tests/PersonalFinance.WebApi.Tests/PersonalFinance.WebApi.Tests.csproj" Id="ce9c9517-97ec-499e-b846-9ddef775ca7a" />
+  </Folder>
+</Solution>

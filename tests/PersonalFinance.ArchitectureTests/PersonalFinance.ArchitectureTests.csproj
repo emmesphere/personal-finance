@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+        <NoWarn>$(NoWarn);CA1707</NoWarn>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" />
+        <PackageReference Include="NetArchTest.Rules" />
+        <PackageReference Include="Shouldly" />
+        <PackageReference Include="xunit" />
+        <PackageReference Include="xunit.runner.visualstudio" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\PersonalFinance.Application\PersonalFinance.Application.csproj" />
+      <ProjectReference Include="..\..\src\PersonalFinance.Domain\PersonalFinance.Domain.csproj" />
+      <ProjectReference Include="..\..\src\PersonalFinance.Infrastructure\PersonalFinance.Infrastructure.csproj" />
+      <ProjectReference Include="..\..\src\PersonalFinance.WebApi\PersonalFinance.WebApi.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="Xunit" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,28 @@
+# Git
+.git
+.gitignore
+
+# IDEs
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+
+# Build outputs
+**/bin/
+**/obj/
+
+# Tests artifacts
+**/TestResults/
+
+# OS / misc
+.DS_Store
+Thumbs.db
+
+# Docs / misc
+*.md
+
+# Local env files
+.env
+.env.*

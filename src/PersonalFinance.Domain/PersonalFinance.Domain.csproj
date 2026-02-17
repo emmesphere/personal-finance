@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\PersonalFinance.BuildingBlocks\PersonalFinance.BuildingBlocks.csproj" />
+  </ItemGroup>
+
+ 
+
+</Project>
