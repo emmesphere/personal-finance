@@ -37,7 +37,7 @@ public sealed class JournalEntryConfiguration : IEntityTypeConfiguration<Journal
             .IsRequired();
 
         builder.Property(x => x.Status)
-            .HasConversion<int>()
+            .HasConversion<string>()
             .HasColumnName("status")
             .IsRequired();
 
@@ -58,7 +58,7 @@ public sealed class JournalEntryConfiguration : IEntityTypeConfiguration<Journal
                 .IsRequired();
 
             lb.Property(x => x.Type)
-                .HasConversion<int>()
+                .HasConversion<string>()
                 .HasColumnName("type")
                 .IsRequired();
 

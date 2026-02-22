@@ -24,7 +24,8 @@ public sealed class AccountConfiguration : IEntityTypeConfiguration<Account>
             .IsRequired();
 
         builder.Property(x => x.Type)
-            .HasConversion<int>()
+            .HasConversion<string>()
+            .HasColumnName("type")
             .IsRequired();
 
         builder.Property(x => x.CreatedAt)
