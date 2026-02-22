@@ -63,7 +63,7 @@ public sealed class JournalEntry : AggregateRoot
         if (Status != JournalEntryStatus.Draft)
             return Result.Failure<EntryLine>(ResultError.Conflict("JournalEntry.Immutable", "Cannot edit a posted journal entry."));
 
-        var lineResult = EntryLine.Create(accountId, type, amount);
+        var lineResult = EntryLine.Create(accountId, Id, type, amount);
         if (lineResult.IsFailure)
             return Result.Failure<EntryLine>(lineResult.Error);
 

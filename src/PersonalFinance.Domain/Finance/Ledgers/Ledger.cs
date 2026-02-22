@@ -24,7 +24,7 @@ public sealed class Ledger : AggregateRoot
         CreatedAt = createdAt;
         IsActive = true;
 
-        _members.Add(LedgerMember.Create(ownerUserId, createdAt));
+        _members.Add(LedgerMember.Create(ownerUserId, Id, createdAt));
     }
 
     public static Result<Ledger> Create(string name, UserId ownerUserId, DateTime createdAt)
@@ -36,14 +36,14 @@ public sealed class Ledger : AggregateRoot
     }
 
     public bool IsMember(UserId userId)
-        => _members.Any(m => m.UserId.Equals(userId));
+        => _members.Exists(m => m.UserId.Equals(userId));
 
     public Result AddMember(UserId userId, DateTime joinedAt)
     {
         if (IsMember(userId))
             return Result.Success();
 
-        _members.Add(LedgerMember.Create(userId, joinedAt));
+        _members.Add(LedgerMember.Create(userId, Id, joinedAt));
         return Result.Success();
     }
 

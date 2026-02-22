@@ -10,12 +10,9 @@ public sealed class UserId : ValueObject
 
 	private UserId() { }
 
-	internal static UserId From(Guid userId) => new(userId);
+	private UserId(Guid value) => Value = value;
 
-	protected override IEnumerable<object?> GetEqualityComponents()
-	{
-		yield return Value;
-	}
+	public static UserId From(Guid userId) => new(userId);
 
 	public static Result<UserId> Create(Guid userId)
 	{
@@ -23,10 +20,12 @@ public sealed class UserId : ValueObject
 			return Result.Failure<UserId>(ResultError.Validation("UserId.Empty", "UserId cannot be empty"));
 
 		return Result.Success(new UserId(userId));
-
 	}
 
-	private UserId(Guid value) => Value = value;
+	protected override IEnumerable<object?> GetEqualityComponents()
+	{
+		yield return Value;
+	}
 
 	public override string ToString() => Value.ToString();
 

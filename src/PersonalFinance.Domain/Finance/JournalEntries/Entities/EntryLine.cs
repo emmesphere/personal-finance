@@ -10,18 +10,27 @@ public sealed class EntryLine : Entity
     public EntryType Type { get; }
     public Money Amount { get; }
 
-    private EntryLine(Guid accountId, EntryType type, Money amount)
+    public Guid JournalEntryId { get; }
+    public JournalEntry JournalEntry { get; } = null!;
+
+    private EntryLine()
+    {
+        Amount = Money.Zero;
+    }
+
+    private EntryLine(Guid accountId, Guid journalEntryId, EntryType type, Money amount)
     {
         AccountId = accountId;
         Type = type;
         Amount = amount;
+        JournalEntryId = journalEntryId;
     }
 
-    internal static Result<EntryLine> Create(Guid accountId, EntryType type, Money amount)
+    internal static Result<EntryLine> Create(Guid accountId, Guid journalEntryId, EntryType type, Money amount)
     {
         if (accountId == Guid.Empty)
             return Result.Failure<EntryLine>(ResultError.Validation("EntryLine.Account.Empty", "AccountId is required."));
 
-        return Result.Success(new EntryLine(accountId, type, amount));
+        return Result.Success(new EntryLine(accountId, journalEntryId, type, amount));
     }
 }

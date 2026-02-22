@@ -1,5 +1,8 @@
+using Microsoft.EntityFrameworkCore;
+
 using PersonalFinance.Application;
 using PersonalFinance.Infrastructure;
+using PersonalFinance.Infrastructure.Persistence;
 using PersonalFinance.WebApi.Endpoints.ToDos;
 
 using Serilog;
@@ -29,6 +32,12 @@ var app = builder.Build();
 app.UseExceptionHandler();
 
 app.UseSerilogRequestLogging();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<PersonalFinanceDbContext>();
+    await dbContext.Database.MigrateAsync();
+}
 
 app.UseHttpsRedirection();
 

@@ -1,12 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
 using PersonalFinance.Application.Abstractions.Events;
 using PersonalFinance.Application.Abstractions.Persistence;
 using PersonalFinance.BuildingBlocks.Abstractions;
 using PersonalFinance.Infrastructure.Events;
+using PersonalFinance.Infrastructure.Persistence;
 using PersonalFinance.Infrastructure.Persistence.InMemory;
 using PersonalFinance.Infrastructure.Time;
-
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace PersonalFinance.Infrastructure;
 
@@ -14,6 +16,12 @@ public static class InfrastructureDependencyInjection
 {
     public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddDbContext<PersonalFinanceDbContext>(options =>
+        {
+            options.UseNpgsql(configuration.GetConnectionString("DefaultConnection"))
+                   .UseSnakeCaseNamingConvention();
+        });
+
         services.AddSingleton<IToDoListRepository, InMemoryToDoListRepository>();
         services.AddSingleton<IUnitOfWork, InMemoryUnitOfWork>();
 

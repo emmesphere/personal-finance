@@ -13,7 +13,7 @@ public sealed class DueDate : ValueObject
 
     private DueDate(int day) => Day = day;
 
-    internal static DueDate From(int day) => new(day);
+    public static DueDate From(int day) => new(day);
 
     public static Result<DueDate> Create(int day)
     {
