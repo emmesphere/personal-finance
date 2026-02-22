@@ -22,6 +22,7 @@
         <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" />
         <PackageReference Include="Newtonsoft.Json" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
+        <PackageReference Include="System.Linq" />
     </ItemGroup>
     <PropertyGroup>
         <NoWarn>$(NoWarn);CA1062;CA1861</NoWarn>

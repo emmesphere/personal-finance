@@ -149,3 +149,4 @@ tab_width = 4
 dotnet_style_predefined_type_for_locals_parameters_members = true:suggestion
 dotnet_diagnostic.CA1711.severity = none
 dotnet_diagnostic.CA1812.severity = none
+dotnet_diagnostic.CA2007.severity = none

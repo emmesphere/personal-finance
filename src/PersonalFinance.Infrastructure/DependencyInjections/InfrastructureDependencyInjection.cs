@@ -8,6 +8,7 @@ using PersonalFinance.BuildingBlocks.Abstractions;
 using PersonalFinance.Infrastructure.Events;
 using PersonalFinance.Infrastructure.Persistence;
 using PersonalFinance.Infrastructure.Persistence.InMemory;
+using PersonalFinance.Infrastructure.Persistence.Repositories;
 using PersonalFinance.Infrastructure.Time;
 
 namespace PersonalFinance.Infrastructure;
@@ -22,8 +23,10 @@ public static class InfrastructureDependencyInjection
                    .UseSnakeCaseNamingConvention();
         });
 
-        services.AddSingleton<IToDoListRepository, InMemoryToDoListRepository>();
         services.AddSingleton<IUnitOfWork, InMemoryUnitOfWork>();
+        services.AddScoped<ILedgerRepository, LedgerRepository>();
+        services.AddScoped<IAccountRepository, AccountRepository>();
+        services.AddScoped<IJournalEntryRepository, JournalEntryRepository>();
 
         services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
 

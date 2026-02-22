@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PersonalFinance.Application;
 using PersonalFinance.Infrastructure;
 using PersonalFinance.Infrastructure.Persistence;
+using PersonalFinance.WebApi.Endpoints.JournalEntries;
 using PersonalFinance.WebApi.Endpoints.ToDos;
 
 using Serilog;
@@ -15,6 +16,12 @@ builder.Host.UseSerilog((context, services, loggerConfiguration) =>
         .ReadFrom.Configuration(context.Configuration)
         .ReadFrom.Services(services)
         .Enrich.FromLogContext();
+});
+
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.Converters.Add(
+        new System.Text.Json.Serialization.JsonStringEnumConverter());
 });
 
 builder.Services.AddApplication();
@@ -69,6 +76,7 @@ app.MapHealthChecks("/health");
 app.MapHealthChecks("/health/ready");
 
 app.MapCreateToDo();
+app.MapPostJournalEntry();
 
 try
 {
