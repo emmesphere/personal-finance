@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc;
+
 using PersonalFinance.Application.ToDos.CreateToDo;
 using PersonalFinance.BuildingBlocks.Exceptions;
 using PersonalFinance.WebApi.Contracts;
@@ -8,7 +10,7 @@ internal static class CreateToDoEndpoint
 {
     public static IEndpointRouteBuilder MapCreateToDo(this IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapPost("/api/to-do", async (CreateToDoRequest request, CreateToDoHandler handler, CancellationToken ct) =>
+        endpoints.MapPost("/api/to-do", async (CreateToDoRequest request, [FromServices] CreateToDoHandler handler, CancellationToken ct) =>
         {
             try
             {
