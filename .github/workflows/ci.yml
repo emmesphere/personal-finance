@@ -11,7 +11,22 @@ permissions:
 jobs:
   build_test:
     runs-on: ubuntu-latest
-
+    
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: personal_finance_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d personal_finance_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+          
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,4 +51,7 @@ jobs:
         run: dotnet build PersonalFinance.slnx -c Release --no-restore
 
       - name: Test (Release)
+        env:
+          ConnectionStrings__DefaultConnection: Host=localhost;Port=5432;Database=personal_finance_test;Username=postgres;Password=postgres
+          ASPNETCORE_ENVIRONMENT: Testing
         run: dotnet test PersonalFinance.slnx -c Release --no-build --verbosity normal
