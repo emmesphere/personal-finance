@@ -1,6 +1,5 @@
 using FluentValidation;
 
-using PersonalFinance.Application.Abstractions.Messaging;
 using PersonalFinance.Application.Abstractions.Persistence;
 using PersonalFinance.BuildingBlocks.Abstractions;
 using PersonalFinance.BuildingBlocks.Results;
@@ -16,7 +15,7 @@ public sealed class PostJournalEntryHandler(
     IUnitOfWork unitOfWork,
     IDateTimeProvider dateTimeProvider,
     IValidator<PostJournalEntryCommand> validator
-) : ICommandHandler<PostJournalEntryCommand, Result<PostJournalEntryResponse>>
+)
 {
     public async Task<Result<PostJournalEntryResponse>> HandleAsync(PostJournalEntryCommand command, CancellationToken ct)
     {
@@ -24,7 +23,7 @@ public sealed class PostJournalEntryHandler(
 
         var validation = await validator.ValidateAsync(command, ct);
         if (!validation.IsValid)
-        {            
+        {
             return Result.Failure<PostJournalEntryResponse>(
                 ResultError.Validation("JournalEntry.Validation", validation.Errors[0].ErrorMessage));
         }
