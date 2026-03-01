@@ -6,6 +6,7 @@ using PersonalFinance.Application.Abstractions.Events;
 using PersonalFinance.Application.Abstractions.Persistence;
 using PersonalFinance.BuildingBlocks.Abstractions;
 using PersonalFinance.Infrastructure.Events;
+using PersonalFinance.Infrastructure.Messaging;
 using PersonalFinance.Infrastructure.Persistence;
 using PersonalFinance.Infrastructure.Persistence.Repositories;
 using PersonalFinance.Infrastructure.Time;
@@ -29,7 +30,7 @@ public static class InfrastructureDependencyInjection
 
         services.AddSingleton<IDateTimeProvider, SystemDateTimeProvider>();
 
-        services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
+        services.AddScoped<IDomainEventDispatcher, WolverineDomainEventDispatcher>();
 
         return services;
     }

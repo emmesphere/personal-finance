@@ -8,6 +8,7 @@
         <PackageReference Include="Serilog.Sinks.Seq" />
         <PackageReference Include="Swashbuckle.AspNetCore" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
+        <PackageReference Include="WolverineFx" />
     </ItemGroup>
 
     <ItemGroup>

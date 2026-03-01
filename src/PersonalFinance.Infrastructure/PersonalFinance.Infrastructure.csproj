@@ -23,6 +23,7 @@
         <PackageReference Include="Newtonsoft.Json" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
         <PackageReference Include="System.Linq" />
+        <PackageReference Include="WolverineFx" />
     </ItemGroup>
     <PropertyGroup>
         <NoWarn>$(NoWarn);CA1062;CA1861</NoWarn>

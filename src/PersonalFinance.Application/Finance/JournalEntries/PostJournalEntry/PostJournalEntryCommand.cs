@@ -1,8 +1,3 @@
-using System.Collections.ObjectModel;
-
-using PersonalFinance.Application.Abstractions.Messaging;
-using PersonalFinance.BuildingBlocks.Results;
-
 namespace PersonalFinance.Application.Finance.JournalEntries.PostJournalEntry;
 
 public sealed record PostJournalEntryCommand(
@@ -11,4 +6,4 @@ public sealed record PostJournalEntryCommand(
     DateOnly Date,
     string Description,
     IReadOnlyCollection<PostJournalEntryLineDto> Lines
-) : ICommand<Result<PostJournalEntryResponse>>;
+);

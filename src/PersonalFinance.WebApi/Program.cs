@@ -1,12 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 
 using PersonalFinance.Application;
+using PersonalFinance.Application.Abstractions;
 using PersonalFinance.Infrastructure;
 using PersonalFinance.Infrastructure.Persistence;
 using PersonalFinance.WebApi.Endpoints.JournalEntries;
 using PersonalFinance.WebApi.Endpoints.ToDos;
 
 using Serilog;
+
+using Wolverine;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +29,11 @@ builder.Services.ConfigureHttpJsonOptions(options =>
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
+
+builder.Host.UseWolverine(opts =>
+{
+    opts.Discovery.IncludeAssembly(typeof(PersonalFinanceApplicationMarker).Assembly);
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

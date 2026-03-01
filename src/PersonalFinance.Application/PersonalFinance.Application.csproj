@@ -13,6 +13,10 @@
     <PackageReference Include="Serilog" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Abstractions\Messaging\" />
+  </ItemGroup>
+
  
 
 </Project>
