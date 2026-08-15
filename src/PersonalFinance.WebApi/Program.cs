@@ -5,7 +5,6 @@ using PersonalFinance.Application.Abstractions;
 using PersonalFinance.Infrastructure;
 using PersonalFinance.Infrastructure.Persistence;
 using PersonalFinance.WebApi.Endpoints.JournalEntries;
-using PersonalFinance.WebApi.Endpoints.ToDos;
 
 using Serilog;
 
@@ -83,7 +82,6 @@ app.MapGet("/", () => Results.Ok(new { status = "ok" }));
 app.MapHealthChecks("/health");
 app.MapHealthChecks("/health/ready");
 
-app.MapCreateToDo();
 app.MapPostJournalEntry();
 
 try
