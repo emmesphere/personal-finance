@@ -22,7 +22,6 @@
         <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" />
         <PackageReference Include="Newtonsoft.Json" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
-        <PackageReference Include="System.Linq" />
         <PackageReference Include="WolverineFx" />
     </ItemGroup>
     <PropertyGroup>
