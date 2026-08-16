@@ -11,4 +11,7 @@ public sealed class LedgerRepository(PersonalFinanceDbContext context) : ILedger
         => await context.Ledgers.Include(l => l.Members)
             .FirstOrDefaultAsync(l => l.Id == id, cancellationToken: ct);
 
+    public Task<int> CountAllAsync(CancellationToken ct) => context.Ledgers.CountAsync(ct);
+
+    public void Add(Ledger ledger) => context.Ledgers.Add(ledger);
 }
