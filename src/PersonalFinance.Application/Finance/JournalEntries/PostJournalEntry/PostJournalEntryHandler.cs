@@ -1,6 +1,7 @@
 using FluentValidation;
 
 using PersonalFinance.Application.Abstractions.Persistence;
+using PersonalFinance.Application.Abstractions.Security;
 using PersonalFinance.BuildingBlocks.Abstractions;
 using PersonalFinance.BuildingBlocks.Results;
 using PersonalFinance.Domain.Finance.Common;
@@ -14,6 +15,7 @@ public sealed class PostJournalEntryHandler(
     IJournalEntryRepository journalEntryRepository,
     IUnitOfWork unitOfWork,
     IDateTimeProvider dateTimeProvider,
+    ICurrentUserService currentUserService,
     IValidator<PostJournalEntryCommand> validator
 )
 {
@@ -33,7 +35,7 @@ public sealed class PostJournalEntryHandler(
             return Result.Failure<PostJournalEntryResponse>(
                 ResultError.NotFound("Ledger.NotFound", "Ledger not found."));
 
-        var userIdResult = UserId.Create(command.CreatedByUserId);
+        var userIdResult = UserId.Create(currentUserService.UserId);
         if (userIdResult.IsFailure)
             return Result.Failure<PostJournalEntryResponse>(userIdResult.Error);
 

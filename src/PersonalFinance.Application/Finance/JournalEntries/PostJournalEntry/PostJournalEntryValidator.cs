@@ -7,7 +7,6 @@ public sealed class PostJournalEntryValidator : AbstractValidator<PostJournalEnt
     public PostJournalEntryValidator()
     {
         RuleFor(x => x.LedgerId).NotEmpty();
-        RuleFor(x => x.CreatedByUserId).NotEmpty();
         RuleFor(x => x.Description).MaximumLength(500);
 
         RuleFor(x => x.Lines)
