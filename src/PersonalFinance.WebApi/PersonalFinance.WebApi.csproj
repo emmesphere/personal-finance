@@ -9,6 +9,7 @@
         <PackageReference Include="Swashbuckle.AspNetCore" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
         <PackageReference Include="WolverineFx" />
+        <PackageReference Include="WolverineFx.RuntimeCompilation" />
     </ItemGroup>
 
     <ItemGroup>

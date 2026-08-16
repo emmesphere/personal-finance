@@ -2,9 +2,11 @@ namespace PersonalFinance.Domain.Finance.Accounts;
 
 public enum AccountType
 {
-	Asset,
-	Liability,
+	BankAccount,
+	Wallet,
+	Benefit,
+	CreditCard,
+	Debit,
 	Income,
-	Expense,
-	Equity
+	Expense
 }
