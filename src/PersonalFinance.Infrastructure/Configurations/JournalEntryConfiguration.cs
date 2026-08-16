@@ -42,7 +42,18 @@ public sealed class JournalEntryConfiguration : IEntityTypeConfiguration<Journal
             .IsRequired();
 
         builder.Property(x => x.PostedAt)
-            .HasColumnName("posted_at");        
+            .HasColumnName("posted_at");
+
+        builder.Property(x => x.InstallmentPlanId)
+            .HasColumnName("installment_plan_id");
+
+        builder.Property(x => x.InstallmentNumber)
+            .HasColumnName("installment_number");
+
+        builder.Property(x => x.InstallmentTotalCount)
+            .HasColumnName("installment_total_count");
+
+        builder.HasIndex(x => x.InstallmentPlanId);
 
         builder.OwnsMany(x => x.Lines, lb =>
         {

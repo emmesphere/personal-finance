@@ -20,7 +20,7 @@ internal static class PostJournalEntryEndpoint
             try
             {
                 var command = new PostJournalEntryCommand(ledgerId,
-                    request.CreatedByUserId, request.Date, request.Description,
+                    request.Date, request.Description,
                     request.Lines);
                 Result<PostJournalEntryResponse> result =
                     await bus.InvokeAsync<Result<PostJournalEntryResponse>>(command, ct);
