@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 using PersonalFinance.Domain.Finance.Accounts;
+using PersonalFinance.Domain.Finance.Categories;
 
 namespace PersonalFinance.Infrastructure.Persistence.Configurations;
 
@@ -42,7 +43,19 @@ public sealed class AccountConfiguration : IEntityTypeConfiguration<Account>
                 v => v == null ? null : DueDate.From(v.Value))
             .HasColumnName("due_day");
 
+        builder.Property(x => x.CategoryId)
+            .HasColumnName("category_id");
+
+        builder.HasOne<Category>()
+            .WithMany()
+            .HasForeignKey(x => x.CategoryId)
+            .OnDelete(DeleteBehavior.Restrict);
+
         builder.HasIndex(x => new { x.LedgerId, x.Name })
             .IsUnique();
+
+        builder.HasIndex(x => new { x.LedgerId, x.CategoryId })
+            .IsUnique()
+            .HasFilter("category_id IS NOT NULL");
     }
 }

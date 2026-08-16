@@ -17,6 +17,9 @@ public sealed class JournalEntry : AggregateRoot
     public string Description { get; private set; } = string.Empty;
     public JournalEntryStatus Status { get; private set; }
     public DateTime? PostedAt { get; private set; }
+    public Guid? InstallmentPlanId { get; private set; }
+    public int? InstallmentNumber { get; private set; }
+    public int? InstallmentTotalCount { get; private set; }
 
     public IReadOnlyCollection<EntryLine> Lines => _lines.AsReadOnly();
 
@@ -69,6 +72,27 @@ public sealed class JournalEntry : AggregateRoot
 
         _lines.Add(lineResult.Value);
         return Result.Success(lineResult.Value);
+    }
+
+    public Result AssignInstallment(Guid planId, int number, int total)
+    {
+        if (Status != JournalEntryStatus.Draft)
+            return Result.Failure(ResultError.Conflict("JournalEntry.Immutable", "Cannot edit a posted journal entry."));
+
+        if (planId == Guid.Empty)
+            return Result.Failure(ResultError.Validation("JournalEntry.InstallmentPlanId.Empty", "InstallmentPlanId is required."));
+
+        if (total < 1)
+            return Result.Failure(ResultError.Validation("JournalEntry.InstallmentTotal.Invalid", "InstallmentTotalCount must be at least 1."));
+
+        if (number < 1 || number > total)
+            return Result.Failure(ResultError.Validation("JournalEntry.InstallmentNumber.Invalid", "InstallmentNumber must be between 1 and InstallmentTotalCount."));
+
+        InstallmentPlanId = planId;
+        InstallmentNumber = number;
+        InstallmentTotalCount = total;
+
+        return Result.Success();
     }
 
     public Result RemoveLine(Guid lineId)

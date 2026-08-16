@@ -20,9 +20,11 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" />
+        <PackageReference Include="Microsoft.Extensions.Identity.Core" />
+        <PackageReference Include="Microsoft.IdentityModel.Tokens" />
         <PackageReference Include="Newtonsoft.Json" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
-        <PackageReference Include="System.Linq" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
         <PackageReference Include="WolverineFx" />
     </ItemGroup>
     <PropertyGroup>

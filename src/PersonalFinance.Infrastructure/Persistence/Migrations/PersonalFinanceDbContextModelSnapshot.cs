@@ -17,7 +17,7 @@ namespace PersonalFinance.Infrastructure.Persistence.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.24")
+                .HasAnnotation("ProductVersion", "10.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -28,6 +28,10 @@ namespace PersonalFinance.Infrastructure.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("id");
+
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("category_id");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone")
@@ -59,11 +63,96 @@ namespace PersonalFinance.Infrastructure.Persistence.Migrations
                     b.HasKey("Id")
                         .HasName("pk_accounts");
 
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_accounts_category_id");
+
+                    b.HasIndex("LedgerId", "CategoryId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_accounts_ledger_id_category_id")
+                        .HasFilter("category_id IS NOT NULL");
+
                     b.HasIndex("LedgerId", "Name")
                         .IsUnique()
                         .HasDatabaseName("ix_accounts_ledger_id_name");
 
                     b.ToTable("accounts", (string)null);
+                });
+
+            modelBuilder.Entity("PersonalFinance.Domain.Finance.Budgets.MonthlyBudget", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("numeric(18,2)")
+                        .HasColumnName("amount");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<Guid>("LedgerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("ledger_id");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int>("YearMonth")
+                        .HasColumnType("integer")
+                        .HasColumnName("year_month");
+
+                    b.HasKey("Id")
+                        .HasName("pk_monthly_budgets");
+
+                    b.HasIndex("LedgerId", "YearMonth")
+                        .IsUnique()
+                        .HasDatabaseName("ix_monthly_budgets_ledger_id_year_month");
+
+                    b.ToTable("monthly_budgets", (string)null);
+                });
+
+            modelBuilder.Entity("PersonalFinance.Domain.Finance.Categories.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<Guid?>("CreatedByUserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("created_by_user_id");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<bool>("IsSystemDefined")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_system_defined");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("kind");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_categories");
+
+                    b.ToTable("categories", (string)null);
                 });
 
             modelBuilder.Entity("PersonalFinance.Domain.Finance.JournalEntries.JournalEntry", b =>
@@ -87,6 +176,18 @@ namespace PersonalFinance.Infrastructure.Persistence.Migrations
                         .HasColumnType("character varying(500)")
                         .HasColumnName("description");
 
+                    b.Property<int?>("InstallmentNumber")
+                        .HasColumnType("integer")
+                        .HasColumnName("installment_number");
+
+                    b.Property<Guid?>("InstallmentPlanId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("installment_plan_id");
+
+                    b.Property<int?>("InstallmentTotalCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("installment_total_count");
+
                     b.Property<Guid>("LedgerId")
                         .HasColumnType("uuid")
                         .HasColumnName("ledger_id");
@@ -102,6 +203,9 @@ namespace PersonalFinance.Infrastructure.Persistence.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_journal_entries");
+
+                    b.HasIndex("InstallmentPlanId")
+                        .HasDatabaseName("ix_journal_entries_installment_plan_id");
 
                     b.ToTable("journal_entries", (string)null);
                 });
@@ -135,6 +239,72 @@ namespace PersonalFinance.Infrastructure.Persistence.Migrations
                         .HasName("pk_ledgers");
 
                     b.ToTable("ledgers", (string)null);
+                });
+
+            modelBuilder.Entity("PersonalFinance.Domain.Identity.Users.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(320)
+                        .HasColumnType("character varying(320)")
+                        .HasColumnName("email");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("full_name");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("password_hash");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasMaxLength(30)
+                        .HasColumnType("character varying(30)")
+                        .HasColumnName("phone_number");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("role");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("username");
+
+                    b.HasKey("Id")
+                        .HasName("pk_users");
+
+                    b.HasIndex("Username")
+                        .IsUnique()
+                        .HasDatabaseName("ix_users_username");
+
+                    b.ToTable("users", (string)null);
+                });
+
+            modelBuilder.Entity("PersonalFinance.Domain.Finance.Accounts.Account", b =>
+                {
+                    b.HasOne("PersonalFinance.Domain.Finance.Categories.Category", null)
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_accounts_categories_category_id");
                 });
 
             modelBuilder.Entity("PersonalFinance.Domain.Finance.JournalEntries.JournalEntry", b =>
