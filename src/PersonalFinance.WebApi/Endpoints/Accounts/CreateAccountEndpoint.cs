@@ -16,7 +16,7 @@ internal static class CreateAccountEndpoint
             IMessageBus bus,
             CancellationToken ct) =>
         {
-            var command = new CreateAccountCommand(ledgerId, request.Name, request.Type, request.DueDateDay);
+            var command = new CreateAccountCommand(ledgerId, request.Name, request.Type, request.DueDateDay, request.OpeningBalance);
             var result = await bus.InvokeAsync<Result<CreateAccountResponse>>(command, ct);
 
             return result.IsSuccess

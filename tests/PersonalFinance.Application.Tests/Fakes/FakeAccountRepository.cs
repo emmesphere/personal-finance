@@ -24,5 +24,8 @@ public sealed class FakeAccountRepository : IAccountRepository
     public Task<Account?> GetCategoryBackingAccountAsync(Guid ledgerId, Guid categoryId, CancellationToken ct)
         => Task.FromResult(_accounts.FirstOrDefault(a => a.LedgerId == ledgerId && a.CategoryId == categoryId));
 
+    public Task<Account?> GetEquityBackingAccountAsync(Guid ledgerId, CancellationToken ct)
+        => Task.FromResult(_accounts.FirstOrDefault(a => a.LedgerId == ledgerId && a.Type == AccountType.Equity));
+
     public void Add(Account account) => _accounts.Add(account);
 }

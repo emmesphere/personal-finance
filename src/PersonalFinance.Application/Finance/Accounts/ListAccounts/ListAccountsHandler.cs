@@ -9,6 +9,7 @@ namespace PersonalFinance.Application.Finance.Accounts.ListAccounts;
 public sealed class ListAccountsHandler(
     ILedgerRepository ledgerRepository,
     IAccountRepository accountRepository,
+    IFinanceReportQueries reportQueries,
     ICurrentUserService currentUserService)
 {
     public async Task<Result<IReadOnlyCollection<AccountSummary>>> HandleAsync(ListAccountsQuery query, CancellationToken ct)
@@ -29,10 +30,11 @@ public sealed class ListAccountsHandler(
             return Result.Failure<IReadOnlyCollection<AccountSummary>>(memberCheck.Error);
 
         var accounts = await accountRepository.ListByLedgerAsync(query.LedgerId, ct);
+        var balances = await reportQueries.GetAccountBalancesAsync(query.LedgerId, ct);
 
         IReadOnlyCollection<AccountSummary> summaries = accounts
-            .Where(a => a.Type is not (AccountType.Income or AccountType.Expense))
-            .Select(a => new AccountSummary(a.Id, a.Name, a.Type, a.DueDate?.Day, a.IsActive))
+            .Where(a => a.Type is not (AccountType.Income or AccountType.Expense or AccountType.Equity))
+            .Select(a => new AccountSummary(a.Id, a.Name, a.Type, a.DueDate?.Day, a.IsActive, balances.GetValueOrDefault(a.Id)))
             .ToArray();
 
         return Result.Success(summaries);

@@ -7,4 +7,5 @@ public sealed record AccountSummary(
     string Name,
     AccountType Type,
     int? DueDateDay,
-    bool IsActive);
+    bool IsActive,
+    decimal Balance);
