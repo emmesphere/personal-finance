@@ -1,7 +1,7 @@
 services:
   webapi:
     build:
-      context: .
+      context: ./backend
       dockerfile: src/PersonalFinance.WebApi/Dockerfile
     ports:
       - "8080:8080"

@@ -16,6 +16,10 @@
 
 ## Backend
 
+Backend code belongs in:
+
+backend/
+
 The backend owns:
 
 * business rules
@@ -106,7 +110,7 @@ Prefer concrete implementations until an abstraction provides clear value.
 - Start as a modular monolith.
 - Do not introduce Kubernetes during the MVP phase.
 
-## Shared contracts
+### Shared contracts
 
 When API contracts change:
 
@@ -117,6 +121,21 @@ When API contracts change:
 5. Avoid silently introducing breaking changes.
 
 Do not duplicate domain concepts unnecessarily between frontend and backend.
+
+## Frontend
+
+Frontend code belongs in:
+
+frontend/
+
+The frontend must not:
+
+access the database directly
+contain database credentials
+reproduce backend business rules unnecessarily
+depend on backend implementation details
+
+Communication with the backend must happen through the application's HTTP API.
 
 ## Dependencies
 

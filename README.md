@@ -8,22 +8,23 @@ The API allows a user to track accounts, categorize income and expenses, post jo
 
 ## Architecture
 
-The solution is organized into four architectural layers plus a shared building-blocks project:
+The backend solution lives under `backend/` and is organized into four architectural layers plus a shared building-blocks project:
 
 ```
-src/
-  PersonalFinance.Domain          Entities, value objects, domain events, business rules
-  PersonalFinance.Application     Use cases, command/query handlers, application contracts
-  PersonalFinance.Infrastructure  EF Core persistence, security, seeding, external integrations
-  PersonalFinance.WebApi          Minimal API endpoints, composition root
-  PersonalFinance.BuildingBlocks  Shared abstractions (Result, AggregateRoot, exceptions)
+backend/
+  src/
+    PersonalFinance.Domain          Entities, value objects, domain events, business rules
+    PersonalFinance.Application     Use cases, command/query handlers, application contracts
+    PersonalFinance.Infrastructure  EF Core persistence, security, seeding, external integrations
+    PersonalFinance.WebApi          Minimal API endpoints, composition root
+    PersonalFinance.BuildingBlocks  Shared abstractions (Result, AggregateRoot, exceptions)
 
-tests/
-  PersonalFinance.Domain.Tests
-  PersonalFinance.Application.Tests
-  PersonalFinance.BuildingBlocks.Tests
-  PersonalFinance.WebApi.Tests
-  PersonalFinance.ArchitectureTests
+  tests/
+    PersonalFinance.Domain.Tests
+    PersonalFinance.Application.Tests
+    PersonalFinance.BuildingBlocks.Tests
+    PersonalFinance.WebApi.Tests
+    PersonalFinance.ArchitectureTests
 ```
 
 Dependencies flow inward: `WebApi` and `Infrastructure` depend on `Application`, which depends on `Domain`. Layering rules are enforced by `PersonalFinance.ArchitectureTests` using NetArchTest.
@@ -46,10 +47,11 @@ Dependencies flow inward: `WebApi` and `Infrastructure` depend on `Application`,
 
 ## Running Locally
 
-1. Ensure a PostgreSQL instance is reachable and update the `ConnectionStrings:DefaultConnection` value in `src/PersonalFinance.WebApi/appsettings.Development.json` if needed.
+1. Ensure a PostgreSQL instance is reachable and update the `ConnectionStrings:DefaultConnection` value in `backend/src/PersonalFinance.WebApi/appsettings.Development.json` if needed.
 2. Restore, build, and run the API:
 
    ```bash
+   cd backend
    dotnet restore
    dotnet build
    dotnet run --project src/PersonalFinance.WebApi
@@ -57,7 +59,7 @@ Dependencies flow inward: `WebApi` and `Infrastructure` depend on `Application`,
 
 Database migrations are applied automatically at startup. An administrator account is seeded from the `Admin` configuration section when the configured username does not already exist.
 
-The API listens on `http://localhost:5173` by default (see `Properties/launchSettings.json`).
+The API listens on `http://localhost:8030` (HTTP) / `https://localhost:8031` (HTTPS) by default (see `backend/src/PersonalFinance.WebApi/Properties/launchSettings.json`).
 
 ## Running with Docker / Podman
 
@@ -97,6 +99,7 @@ Serilog writes to the console by default. When running through Docker Compose, l
 ## Testing
 
 ```bash
+cd backend
 dotnet test
 ```
 
