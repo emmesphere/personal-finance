@@ -45,12 +45,15 @@ jobs:
             ${{ runner.os }}-nuget-
 
       - name: Restore
+        working-directory: backend
         run: dotnet restore PersonalFinance.slnx
 
       - name: Build (Release)
+        working-directory: backend
         run: dotnet build PersonalFinance.slnx -c Release --no-restore
 
       - name: Test (Release)
+        working-directory: backend
         env:
           ConnectionStrings__DefaultConnection: Host=localhost;Port=5432;Database=personal_finance_test;Username=postgres;Password=postgres
           ASPNETCORE_ENVIRONMENT: Testing

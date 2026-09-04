@@ -86,6 +86,18 @@ builder.Services.AddProblemDetails();
 
 builder.Services.AddHealthChecks();
 
+const string FrontendCorsPolicy = "Frontend";
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(FrontendCorsPolicy, policy =>
+    {
+        policy.WithOrigins(allowedOrigins)
+            .WithMethods("GET", "POST", "PUT", "PATCH")
+            .WithHeaders("Content-Type", "Authorization");
+    });
+});
+
 var jwtSection = builder.Configuration.GetSection("Jwt");
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -134,6 +146,8 @@ if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
 }
+
+app.UseCors(FrontendCorsPolicy);
 
 app.Use((context, next) =>
 {
