@@ -3,6 +3,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi;
 
 using PersonalFinance.Application;
 using PersonalFinance.Application.Abstractions;
@@ -23,6 +24,7 @@ using PersonalFinance.WebApi.Endpoints.Expenses;
 using PersonalFinance.WebApi.Endpoints.Incomes;
 using PersonalFinance.WebApi.Endpoints.JournalEntries;
 using PersonalFinance.WebApi.Endpoints.Reports;
+using PersonalFinance.WebApi.Endpoints.Users;
 using PersonalFinance.WebApi.Security;
 
 using Serilog;
@@ -59,7 +61,26 @@ builder.Host.UseWolverine(opts =>
 });
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "Enter the JWT token obtained from /login.",
+    });
+
+    options.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecuritySchemeReference("Bearer", document),
+            new List<string>()
+        },
+    });
+});
 
 builder.Services.AddProblemDetails();
 
@@ -143,6 +164,7 @@ app.MapRegisterUser();
 app.MapLoginUser();
 
 var protectedApi = app.MapGroup(string.Empty).RequireAuthorization();
+protectedApi.MapGetMe();
 protectedApi.MapPostJournalEntry();
 protectedApi.MapCreateAccount();
 protectedApi.MapListAccounts();
