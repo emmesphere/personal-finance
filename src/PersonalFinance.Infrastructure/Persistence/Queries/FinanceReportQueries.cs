@@ -32,6 +32,28 @@ public sealed class FinanceReportQueries(PersonalFinanceDbContext context) : IFi
              - rows.Where(r => r.Type == EntryType.Credit).Sum(r => r.Amount.Amount);
     }
 
+    public async Task<IReadOnlyDictionary<Guid, decimal>> GetAccountBalancesAsync(Guid ledgerId, CancellationToken ct)
+    {
+        var rows = await (
+            from je in context.JournalEntries.AsNoTracking()
+            where je.LedgerId == ledgerId && je.Status == JournalEntryStatus.Posted
+            from line in je.Lines
+            join account in context.Accounts.AsNoTracking() on line.AccountId equals account.Id
+            where account.Type != AccountType.Income && account.Type != AccountType.Expense && account.Type != AccountType.Equity
+            select new { AccountId = account.Id, AccountType = account.Type, EntryType = line.Type, line.Amount }
+        ).ToListAsync(ct);
+
+        return rows
+            .GroupBy(r => new { r.AccountId, r.AccountType })
+            .ToDictionary(
+                g => g.Key.AccountId,
+                g => g.Key.AccountType is AccountType.CreditCard or AccountType.Loan
+                    ? g.Where(x => x.EntryType == EntryType.Credit).Sum(x => x.Amount.Amount)
+                        - g.Where(x => x.EntryType == EntryType.Debit).Sum(x => x.Amount.Amount)
+                    : g.Where(x => x.EntryType == EntryType.Debit).Sum(x => x.Amount.Amount)
+                        - g.Where(x => x.EntryType == EntryType.Credit).Sum(x => x.Amount.Amount));
+    }
+
     public async Task<IReadOnlyCollection<CategoryAmount>> GetExpensesByCategoryAsync(Guid ledgerId, YearMonth yearMonth, CancellationToken ct)
     {
         var rows = await (
