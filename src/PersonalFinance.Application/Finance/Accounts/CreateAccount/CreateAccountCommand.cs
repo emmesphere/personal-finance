@@ -6,4 +6,5 @@ public sealed record CreateAccountCommand(
     Guid LedgerId,
     string Name,
     AccountType Type,
-    int? DueDateDay);
+    int? DueDateDay,
+    decimal? OpeningBalance = null);

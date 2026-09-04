@@ -7,6 +7,8 @@ public enum AccountType
 	Benefit,
 	CreditCard,
 	Debit,
+	Loan,
 	Income,
-	Expense
+	Expense,
+	Equity
 }

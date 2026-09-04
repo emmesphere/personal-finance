@@ -21,5 +21,8 @@ public sealed class AccountRepository(PersonalFinanceDbContext context) : IAccou
     public Task<Account?> GetCategoryBackingAccountAsync(Guid ledgerId, Guid categoryId, CancellationToken ct)
         => context.Accounts.FirstOrDefaultAsync(a => a.LedgerId == ledgerId && a.CategoryId == categoryId, ct);
 
+    public Task<Account?> GetEquityBackingAccountAsync(Guid ledgerId, CancellationToken ct)
+        => context.Accounts.FirstOrDefaultAsync(a => a.LedgerId == ledgerId && a.Type == AccountType.Equity, ct);
+
     public void Add(Account account) => context.Accounts.Add(account);
 }

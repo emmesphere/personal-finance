@@ -26,7 +26,7 @@ public sealed class Account : AggregateRoot
         IsActive = true;
     }
 
-    private static bool AllowsDueDate(AccountType type) => type is AccountType.CreditCard or AccountType.Debit;
+    private static bool AllowsDueDate(AccountType type) => type is AccountType.CreditCard or AccountType.Debit or AccountType.Loan;
 
     private static bool IsCategoryBacking(AccountType type) => type is AccountType.Income or AccountType.Expense;
 

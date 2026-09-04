@@ -9,7 +9,8 @@ public sealed class AccountTests
     [Theory]
     [InlineData(AccountType.CreditCard)]
     [InlineData(AccountType.Debit)]
-    public void Create_ShouldSucceed_WithDueDate_ForCreditCardOrDebit(AccountType type)
+    [InlineData(AccountType.Loan)]
+    public void Create_ShouldSucceed_WithDueDate_ForCreditCardOrDebitOrLoan(AccountType type)
     {
         var dueDate = DueDate.Create(10).Value;
 
@@ -22,7 +23,8 @@ public sealed class AccountTests
     [Theory]
     [InlineData(AccountType.CreditCard)]
     [InlineData(AccountType.Debit)]
-    public void Create_ShouldSucceed_WithoutDueDate_ForCreditCardOrDebit(AccountType type)
+    [InlineData(AccountType.Loan)]
+    public void Create_ShouldSucceed_WithoutDueDate_ForCreditCardOrDebitOrLoan(AccountType type)
     {
         var result = Account.Create(Guid.NewGuid(), "Credit Card", type, dueDate: null, categoryId: null, DateTime.UtcNow);
 
@@ -34,6 +36,7 @@ public sealed class AccountTests
     [InlineData(AccountType.BankAccount)]
     [InlineData(AccountType.Wallet)]
     [InlineData(AccountType.Benefit)]
+    [InlineData(AccountType.Equity)]
     public void Create_ShouldFail_WhenDueDateProvided_ForNonCreditCardOrDebitType(AccountType type)
     {
         var dueDate = DueDate.Create(10).Value;
@@ -72,6 +75,8 @@ public sealed class AccountTests
     [InlineData(AccountType.Benefit)]
     [InlineData(AccountType.CreditCard)]
     [InlineData(AccountType.Debit)]
+    [InlineData(AccountType.Loan)]
+    [InlineData(AccountType.Equity)]
     public void Create_ShouldFail_WhenCategoryIdProvided_ForNonIncomeOrExpenseType(AccountType type)
     {
         var result = Account.Create(Guid.NewGuid(), "My Account", type, dueDate: null, categoryId: Guid.NewGuid(), DateTime.UtcNow);

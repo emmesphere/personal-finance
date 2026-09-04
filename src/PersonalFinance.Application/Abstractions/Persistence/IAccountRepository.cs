@@ -12,5 +12,7 @@ public interface IAccountRepository
 
     Task<Account?> GetCategoryBackingAccountAsync(Guid ledgerId, Guid categoryId, CancellationToken ct);
 
+    Task<Account?> GetEquityBackingAccountAsync(Guid ledgerId, CancellationToken ct);
+
     void Add(Account account);
 }
